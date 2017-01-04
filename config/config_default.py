@@ -1,0 +1,2 @@
+class ConfigDefault:
+    DEBUG = True

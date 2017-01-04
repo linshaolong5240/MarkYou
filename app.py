@@ -1,9 +1,12 @@
+from config import load_config
 from flask import Flask
 from flask import request
 from flask import render_template
-from flask.ext.bootstrap import Bootstrap
+from flask_bootstrap import Bootstrap
 
 app = Flask(__name__)
+config = load_config()
+app.config.from_object(config)
 bootstrap = Bootstrap(app)
 
 @app.route('/')
@@ -16,4 +19,4 @@ def user(name):
     return render_template('user.html',user_name=name)
 
 if __name__ == "__main__":
-    app.run(debug = True)
+    app.run()
