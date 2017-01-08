@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 {% block navbarright %}
 <ul class="nav navbar-nav navbar-right">
-    <li><a href="{{ url_for('login') }}">Login</a></li>
-    <li><a href="{{ url_for('sign_up') }}">Sign Up</a></li>
+    <li><a href="{{ url_for('user.login') }}">Login</a></li>
+    <!--<li><a href="{{ url_for('sign_up') }}">Sign Up</a></li>-->
 </ul>
 {% endblock %}
 {% block content %}
