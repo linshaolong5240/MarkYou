@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 def register_blueprint(app):
     from . import home
     from . import user

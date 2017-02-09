@@ -6,5 +6,11 @@
 </ul>
 {% endblock %}
 {% block page_content %}
+{% for message in get_flashed_messages() %}
+<div class="alert alert-warning">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    {{ message }}
+</div>
+{% endfor %}
 <h1 style="text-align:center">hello world!</h1>
 {% endblock %}

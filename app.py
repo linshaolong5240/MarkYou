@@ -7,7 +7,6 @@ from flask import render_template
 
 from flask_bootstrap import Bootstrap
 from flask_wtf import Form
-from flask_sqlalchemy import SQLAlchemy
 
 from views import register_blueprint
 
@@ -15,7 +14,6 @@ from views import register_blueprint
 app = Flask(__name__)
 config = load_config()
 app.config.from_object(config)
-db = SQLAlchemy(app)
 bootstrap = Bootstrap(app)
 
 register_blueprint(app)
@@ -39,4 +37,5 @@ def internal_server_error(e):
 
 if __name__ == "__main__":
     print(app.url_map)
+    # app.run(host='0.0.0.0')
     app.run()

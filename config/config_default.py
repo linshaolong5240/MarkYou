@@ -1,5 +1,7 @@
+# -*- coding: utf-8 -*-
+
 class ConfigDefault:
     DEBUG = True
-    SECRET_KEY = 'Mark You' 
-    SQLALCHEMY_DATABASE_URI = 'mysql://root:594120@localhost/database'
+    SECRET_KEY = 'MarkYou'
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:594120@localhost/mysql_markyou?charset=utf8mb4'
     SQLALCHEMY_TRACK_MODIFICATIONS = True
