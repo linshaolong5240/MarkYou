@@ -14,7 +14,9 @@ def login():
     user_agent = request.headers.get('user-agent')
     form = FormLogin()
     if form.validate_on_submit():
-        user_name = form.user_name
-        flash('user logined')
-        return redirect(url_for('home.index'));
+        if form.user_name.data == 'admin':
+            flash('user logined')
+            return redirect(url_for('home.index'))
+        else:
+            flash('logined erro')
     return render_template('login.html', form=form, user_agent=user_agent)
