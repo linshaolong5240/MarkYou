@@ -20,9 +20,9 @@ def login():
     form = FormLogin()
     if form.validate_on_submit():
         user = User.query.filter_by(name=form.user_name.data).first()
-        if user != None:
+        if user != None and user.password_hash == form.password.data:
             flash('user logined')
             return redirect(url_for('main.index'))
         else:
-            flash('can\'t find user')
+            flash('logined error')
     return render_template('login.html', form=form, user_agent=user_agent)
