@@ -20,7 +20,7 @@ def login():
     form = FormLogin()
     if form.validate_on_submit():
         user = User.query.filter_by(name=form.user_name.data).first()
-        if user != None and user.password_hash == form.password.data:
+        if user is not None and user.verify_password(form.password.data) :
             flash('user logined')
             return redirect(url_for('main.index'))
         else:
