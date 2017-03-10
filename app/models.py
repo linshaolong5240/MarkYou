@@ -4,8 +4,9 @@ from . import db
 
 
 class User(db.Model):
+    __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.Unicode(128), unique=True)
+    username = db.Column(db.Unicode(128), unique=True)
     email = db.Column(db.Unicode(128), unique=True)
     password_hash = db.Column(db.Unicode(128))
     def __init__(self, name, email):

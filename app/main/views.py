@@ -14,15 +14,16 @@ def index():
     return render_template('index.html',user_agent=user_agent)
 
 
-@blueprint_main.route('/login',methods = ['GET','POST'])
-def login():
+@blueprint_main.route('/sign_in',methods = ['GET','POST'])
+def sign_in():
     user_agent = request.headers.get('user-agent')
     form = FormLogin()
     if form.validate_on_submit():
         user = User.query.filter_by(name=form.user_name.data).first()
         if user is not None and user.verify_password(form.password.data) :
-            flash('user logined')
+            flash('user sign in')
             return redirect(url_for('main.index'))
         else:
-            flash('logined error')
-    return render_template('login.html', form=form, user_agent=user_agent)
+            flash('sign in error')
+    return render_template('sign_in.html', form=form, user_agent=user_agent)
+
