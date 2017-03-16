@@ -4,6 +4,6 @@ from wtforms import StringField, SubmitField
 from wtforms.validators import Required
 
 class FormLogin(FlaskForm):
-    user_name = StringField('user name', validators=[Required()])
+    username = StringField('username', validators=[Required()])
     password = StringField('password', validators=[Required()])
     submit = SubmitField('Submit')

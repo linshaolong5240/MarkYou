@@ -19,7 +19,7 @@ def sign_in():
     user_agent = request.headers.get('user-agent')
     form = FormLogin()
     if form.validate_on_submit():
-        user = User.query.filter_by(name=form.user_name.data).first()
+        user = User.query.filter_by(username=form.username.data).first()
         if user is not None and user.verify_password(form.password.data) :
             flash('user sign in')
             return redirect(url_for('main.index'))
