@@ -1,9 +1,4 @@
 {% extends 'base.html' %}
-{% block navbarright %}
-<ul class="nav navbar-nav navbar-right">
-    <li><a href="{{ url_for('main.sign_in') }}">Sign In</a></li>
-</ul>
-{% endblock %}
 {% block page_content %}
 {% for message in get_flashed_messages() %}
 <div class="alert alert-warning">
@@ -11,5 +6,11 @@
     {{ message }}
 </div>
 {% endfor %}
+
+{% if current_user.is_authenticated %}
+<h1 style="text-align:center">hello {{ current_user.username }}!</h1>
+{% else %}
 <h1 style="text-align:center">hello world!</h1>
+{% endif %}
+
 {% endblock %}
