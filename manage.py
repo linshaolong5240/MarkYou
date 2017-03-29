@@ -7,7 +7,6 @@ from app.models import User
 
 
 app = create_app('default')
-print(app.url_map)
 
 manager = Manager(app)
 migrate = Migrate(app,db)
