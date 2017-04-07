@@ -14,6 +14,11 @@ def index():
     user_agent = request.headers.get('user-agent')
     return render_template('index.html',user_agent=user_agent)
 
+@blueprint_main.route('/user/<username>')
+def user(username):
+    user = User.query.filter_by(username=username).first()
+    user_agent = request.headers.get('user-agent')
+    return render_template('user.html',user_agent=user_agent,user=user)
 
 @blueprint_main.route('/login',methods = ['GET','POST'])
 def login():
