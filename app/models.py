@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
+from datetime import datetime
 from werkzeug.security import generate_password_hash,check_password_hash
-from flask_login import UserMixin
+from flask_login import UserMixin,AnonymousUserMixin
 from . import db
 from . import login_manager
 
@@ -56,6 +57,7 @@ class User(db.Model,UserMixin):
     email = db.Column(db.Unicode(128), unique=True)
     password_hash = db.Column(db.Unicode(128))
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
+    posts = db.relationship('Post', backref='author', lazy='dynamic')
 
     def __init__(self, username, email, password):
         self.username = username
@@ -78,6 +80,30 @@ class User(db.Model,UserMixin):
     def verify_password(self,password):
         return check_password_hash(self.password_hash,password)
 
+    def can(self,permissions):
+        return self.role is not None and\
+                (self.role.permissions & permissions) == permissions
+
+    def is_administrator(self):
+        return self.can(Permission.ADMINISTER)
+
+class AnonymousUser(AnonymousUserMixin):
+    def can(self, permissions):
+        return False
+    def is_administrator(self):
+        return False
+
+login_manager.anonymous_user = AnonymousUser
+
+class Post(db.Model):
+    __tablename__ = 'posts'
+    id = db.Column(db.Integer, primary_key=True)
+    body = db.Column(db.Text)
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
+

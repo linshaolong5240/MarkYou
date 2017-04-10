@@ -9,5 +9,5 @@ class DevelopmentConfig(Config):
     DEBUG = True
 
 config = {
-        'default':Config,
+        'default':DevelopmentConfig,
         }

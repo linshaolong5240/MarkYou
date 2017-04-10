@@ -1,5 +1,8 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
 {% block page_content %}
+
 {% for message in get_flashed_messages() %}
 <div class="alert alert-warning">
     <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -7,10 +10,43 @@
 </div>
 {% endfor %}
 
-{% if current_user.is_authenticated %}
-<h1 style="text-align:center">hello {{ current_user.username }}!</h1>
-{% else %}
-<h1 style="text-align:center">hello world!</h1>
-{% endif %}
+<div class="page-header">
+    {% if current_user.is_authenticated %}
+    <h1 style="text-align:center">hello {{ current_user.username }}!</h1>
+    {% else %}
+    <h1 style="text-align:center">hello Stranger!</h1>
+    {% endif %}
+</div>
+
+<div>
+    {{ wtf.quick_form(form) }}
+    <hr>
+</div>
+
+<div>
+    <ul class="posts">
+        {% for post in posts %}
+        <li class="post">
+            <div class="profile-thumbnail">
+                <a href="{{ url_for('.user',username=current_user.username) }}">
+                    <img class="img-circle img-thumbnail img-responsive"
+                         src="{{ url_for('static', filename = 'favicon.ico') }}"
+                         height="32"
+                         width="32">
+            </div>
+            <div class="post-content">
+                <div class="post-date">{{post.timestamp }}</div>
+                <div class="post-author">
+                    <a href="{{ url_for('.user', username=post.author.username) }}">
+                        {{ post.author.username }}
+                    </a>
+                </div>
+                <div class="post-body">{{ post.body }}</div>
+            </div>
+        </li>
+        <hr>
+        {% endfor %}
+    </ul>
+</div>
 
 {% endblock %}
