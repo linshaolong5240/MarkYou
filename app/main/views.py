@@ -1,9 +1,5 @@
 # -*- coding: utf-8 -*-
-from flask import request
-from flask import render_template
-from flask import redirect
-from flask import url_for
-from flask import flash
+from flask import current_app,request,render_template,redirect,url_for,flash
 from flask_login import login_user,logout_user,login_required,current_user
 from .forms import FormLogin,FormPost
 from . import blueprint_main
@@ -18,16 +14,21 @@ def index():
         post = Post(body=form.body.data, author=current_user._get_current_object())
         db.session.add(post)
         db.session.commit()
-        return redirect(url_for('main.index'))
-    posts = Post.query.order_by(Post.timestamp.desc()).all()
+        return redirect(url_for('blueprint_main.index'))
+    page = request.args.get('page', 1, type=int)
+    pagination = Post.query.order_by(Post.timestamp.desc()).paginate(page, per_page=current_app.config['POSTS_PER_PAGE'], error_out=False)
+    posts = pagination.items
     user_agent = request.headers.get('user-agent')
-    return render_template('index.html',form=form, posts=posts, user_agent=user_agent)
+    return render_template('index.html',form=form, posts=posts, pagination=pagination, user_agent=user_agent)
 
 @blueprint_main.route('/user/<username>')
 def user(username):
-    user = User.query.filter_by(username=username).first()
     user_agent = request.headers.get('user-agent')
-    return render_template('user.html',user_agent=user_agent,user=user)
+    user = User.query.filter_by(username=username).first()
+    if user is None:
+        abort(404)
+    posts = Post.query.order_by(Post.timestamp.desc()).all()
+    return render_template('user.html',user_agent=user_agent,user=user, posts=posts)
 
 @blueprint_main.route('/login',methods = ['GET','POST'])
 def login():
@@ -38,7 +39,7 @@ def login():
         if user is not None and user.verify_password(form.password.data) :
             flash('login')
             login_user(user,form.remeber_me.data)
-            return redirect(url_for('main.index'))
+            return redirect(url_for('blueprint_main.index'))
         else:
             flash('login error')
     return render_template('login.html', form=form, user_agent=user_agent)
@@ -48,4 +49,5 @@ def login():
 def logout():
     logout_user()
     flash('logout')
-    return redirect(url_for('main.index'))
+    return redirect(url_for('blueprint_main.index'))
+

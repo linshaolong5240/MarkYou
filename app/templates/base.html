@@ -16,27 +16,27 @@
 <div class="navbar navbar-default" role="navigation">
     <div class="container">
         <div class="navbar-header">
-            <a class="navbar-brand" href="{{ url_for('main.index') }}">MY</a>
+            <a class="navbar-brand" href="{{ url_for('blueprint_main.index') }}">MY</a>
         </div>
         <ul class="nav navbar-nav">
-            <li><a href="{{ url_for('main.index') }}">Home</a></li>
-            <li><a href="{{ url_for('main.index') }}">Vim</a></li>
-            <li><a href="{{ url_for('main.index') }}">Mac</a></li>
+            <li><a href="{{ url_for('blueprint_main.index') }}">Home</a></li>
+            <li><a href="{{ url_for('blueprint_main.index') }}">Vim</a></li>
+            <li><a href="{{ url_for('blueprint_main.index') }}">Mac</a></li>
         </ul>
 {% block navbarright %}
 <ul class="nav navbar-nav navbar-right">
     {% if current_user.is_authenticated %}
     <li>
-        <a href="{{ url_for('main.user',username=current_user.username) }}">
+        <a href="{{ url_for('blueprint_main.user',username=current_user.username) }}">
             <img class="img-circle img-thumbnail img-responsive"
                  src="{{ url_for('static', filename = 'favicon.ico') }}"
                  height="32"
                  width="32">
         </a>
     </li>
-    <li><a href="{{ url_for('main.logout') }}">Logout</a></li>
+    <li><a href="{{ url_for('blueprint_main.logout') }}">Logout</a></li>
     {% else %}
-    <li><a href="{{ url_for('main.login') }}">Login</a></li>
+    <li><a href="{{ url_for('blueprint_main.login') }}">Login</a></li>
     {% endif %}
 </ul>
 {% endblock %}
@@ -45,8 +45,20 @@
 {% endblock %}
 
 {% block content %}
+{% for message in get_flashed_messages() %}
+<div class="alert alert-warning">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    {{ message }}
+</div>
+{% endfor %}
+
 {% block page_content %}
 {% endblock %}
 <hr>
 <h2 style="text-align:center">{{ user_agent }}</h2>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+{{ moment.include_moment() }}
 {% endblock %}
