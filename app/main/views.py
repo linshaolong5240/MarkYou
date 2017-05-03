@@ -51,3 +51,22 @@ def logout():
     flash('logout')
     return redirect(url_for('blueprint_main.index'))
 
+@blueprint_main.route('/post/<int:id>')
+def post(id):
+    post = Post.query.get_or_404(id)
+    return render_template('post.html', posts=[post])
+
+@blueprint_main.route('/edit_post/<int:id>', methods = ['GET','POST'])
+def edit_post(id):
+    post = Post.query.get_or_404(id)
+    if current_user != post.author and not current_user.isadministrator():
+        abort(404)
+
+    form = FormPost()
+    if form.validate_on_submit():
+        post.body = form.body.data
+        db.session.add(post)
+        flash("The post has been updated.")
+        return redirect(url_for('.post', id=post.id))
+    form.body.data = post.body
+    return render_template("edit_post.html", form=form)

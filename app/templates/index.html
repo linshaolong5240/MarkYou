@@ -35,4 +35,10 @@
     {% endif %}
 </div>
 
+<hr>
+<h2 style="text-align:center">{{ user_agent }}</h2>
 {% endblock %}
+
+{% block scripts %}
+{{ pagedown.include_pagedown() }}
+{% endblock%}
