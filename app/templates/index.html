@@ -7,16 +7,16 @@
 <div class="page-header">
     {% if current_user.is_authenticated %}
     <h1 style="text-align:center">
-        <img class="img-circle img-thumbnail"
-             src="{{ url_for('static', filename='favicon.ico') }}"
+        <img class="img-circle"
+             src="{{ url_for('static', filename='avatar.jpg') }}"
              height="32"
              width="32">
         hello {{ current_user.username }}!
     </h1>
     {% else %}
     <h1 style="text-align:center">
-        <img class="img-circle img-thumbnail"
-             src="{{ url_for('static', filename='favicon.ico') }}"
+        <img class="img-circle"
+             src="{{ url_for('static', filename='avatar.jpg') }}"
              height="32"
              width="32">
         hello Stranger!
@@ -36,9 +36,5 @@
 </div>
 
 <hr>
-<h2 style="text-align:center">{{ user_agent }}</h2>
+<h5 style="text-align:center">{{ user_agent }}</h5>
 {% endblock %}
-
-{% block scripts %}
-{{ pagedown.include_pagedown() }}
-{% endblock%}

@@ -4,16 +4,16 @@
         <li class="list-group-item">
             <div>
                 <a href="{{ url_for('.user',username=post.author.username) }}">
-                    <img class="img-circle img-thumbnail"
-                         src="{{ url_for('static', filename='favicon.ico') }}"
+                    <img class="img-circle"
+                         src="{{ url_for('static', filename='avatar.jpg') }}"
                          height="32"
                          width="32">
                 </a>
+                <a href="{{ url_for('.user', username=post.author.username) }}">{{ post.author.username }}</a>
+                <!--{{ moment(post.timestamp).fromNow(refresh=True) }}-->
+                {{ moment(post.timestamp).format('LLL') }}
             </div>
             <div>
-                <div>{{ moment(post.timestamp).format('LLL') }}</div>
-                <!--<div>{{ moment(post.timestamp).fromNow(refresh=True) }}</div>-->
-                <div><a href="{{ url_for('.user', username=post.author.username) }}">{{ post.author.username }}</a></div>
                 {% if post.body_html %}
                 <div class="list-group-item-text">{{ post.body_html | safe }}</div>
                 {% else %}

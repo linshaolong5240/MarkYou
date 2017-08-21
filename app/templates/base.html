@@ -10,13 +10,13 @@
       type="image/x-icon">
 {% endblock %}
 
-{% block title %}MarkYou{% endblock %}
+{% block title %}Under The Mask{% endblock %}
 
 {% block navbar %}
 <div class="navbar navbar-default" role="navigation">
     <div class="container">
         <div class="navbar-header">
-            <a class="navbar-brand" href="{{ url_for('blueprint_main.index') }}">MY</a>
+            <a class="navbar-brand" href="{{ url_for('blueprint_main.index') }}">UTM</a>
         </div>
         <ul class="nav navbar-nav">
             <li><a href="{{ url_for('blueprint_main.index') }}">Home</a></li>
@@ -58,5 +58,6 @@
 
 {% block scripts %}
 {{ super() }}
+{{ pagedown.include_pagedown() }}
 {{ moment.include_moment() }}
 {% endblock %}
