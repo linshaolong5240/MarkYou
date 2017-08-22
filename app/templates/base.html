@@ -14,50 +14,50 @@
 
 {% block navbar %}
 <div class="navbar navbar-default" role="navigation">
-    <div class="container">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="{{ url_for('blueprint_main.index') }}">UTM</a>
-        </div>
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-index" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">UTM</a>
+    </div>
+    <div class="collapse navbar-collapse" id="navbar-collapse-index">
         <ul class="nav navbar-nav">
-            <li><a href="{{ url_for('blueprint_main.index') }}">Home</a></li>
+            <li ><a href="{{ url_for('blueprint_main.index') }}">Home</a></li>
             <li><a href="{{ url_for('blueprint_main.index') }}">Vim</a></li>
             <li><a href="{{ url_for('blueprint_main.index') }}">Mac</a></li>
         </ul>
-{% block navbarright %}
-<ul class="nav navbar-nav navbar-right">
-    {% if current_user.is_authenticated %}
-    <li>
-        <a href="{{ url_for('blueprint_main.user',username=current_user.username) }}">
-            <img class="img-circle img-thumbnail img-responsive"
-                 src="{{ url_for('static', filename = 'favicon.ico') }}"
-                 height="32"
-                 width="32">
-        </a>
-    </li>
-    <li><a href="{{ url_for('blueprint_main.logout') }}">Logout</a></li>
-    {% else %}
-    <li><a href="{{ url_for('blueprint_main.login') }}">Login</a></li>
-    {% endif %}
-</ul>
-{% endblock %}
+    {% block navbarright %}
+        <ul class="nav navbar-nav navbar-right">
+            {% if current_user.is_authenticated %}
+            <li><a href="{{ url_for('blueprint_main.logout') }}">Logout</a></li>
+            {% else %}
+            <li><a href="{{ url_for('blueprint_main.login') }}">Login</a></li>
+            {% endif %}
+        </ul>
+    {% endblock %}
     </div>
 </div>
 {% endblock %}
 
 {% block content %}
-{% for message in get_flashed_messages() %}
-<div class="alert alert-warning">
-    <button type="button" class="close" data-dismiss="alert">&times;</button>
-    {{ message }}
-</div>
-{% endfor %}
+<div class="container-fluid">
+    {% for message in get_flashed_messages() %}
+    <div class="alert alert-warning">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ message }}
+    </div>
+    {% endfor %}
 
-{% block page_content %}
-{% endblock %}
+    {% block page_content %}
+    {% endblock %}
+</div>
 {% endblock %}
 
 {% block scripts %}
-{{ super() }}
-{{ pagedown.include_pagedown() }}
-{{ moment.include_moment() }}
+    {{ super() }}
+    {{ pagedown.include_pagedown() }}
+    {{ moment.include_moment() }}
 {% endblock %}
