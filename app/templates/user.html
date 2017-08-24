@@ -1,11 +1,16 @@
 {% extends 'base.html' %}
 {% block page_content %}
 <div class="page-header">
-    <h1>{{ user.username }}</h1>
+    <h1>
+        <img class="img-circle"
+             src="{{ url_for('static', filename='avatar.jpg') }}"
+             height="64"
+             width="64">
+        {{ user.username }}
+    </h1>
     <address>
         <strong>Full Name</strong><br>
         <a href="mailto:#">{{ user.email }}</a>
     </address>
 </div>
-{% include '_posts.html' %}
 {% endblock %}

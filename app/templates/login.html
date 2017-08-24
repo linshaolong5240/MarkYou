@@ -1,15 +1,27 @@
 {% extends 'base.html' %}
 {% import "bootstrap/wtf.html" as wtf %}
+
 {% block page_content %}
+
 {% for message in get_flashed_messages() %}
 <div class="alert alert-warning">
     <button type="button" class="close" data-dismiss="alert">&times;</button>
     {{ message }}
 </div>
 {% endfor %}
-<h1 style="text-align:center">Sign In</h1>
-<hr>
-<div>
-    {{ wtf.quick_form(form) }}
-</div>
+
+<!--{{ wtf.quick_form(form) }}-->
+<form class="form-signin" method="POST" action="{{ url_for('blueprint_main.login') }}">
+    {{ form.hidden_tag() }}
+    <h2 class="form-signin-heading">Please sign in</h2>
+    {{ form.username(class_="form-control", placeholder="Username") }}
+    {{ form.password(class_="form-control", placeholder="Password") }}
+    <div class="checkbox">
+        <label>
+            {{ form.remeber_me }}
+            {{ form.remeber_me.label }}
+        </label>
+    </div>
+    {{ form.submit(class_="btn btn-primary btn-block") }}
+</form>
 {% endblock %}

@@ -5,11 +5,11 @@ from wtforms import TextAreaField,StringField,PasswordField,BooleanField,SubmitF
 from wtforms.validators import Required
 
 class FormLogin(FlaskForm):
-    username   = StringField('username', validators   = [Required()])
-    password   = PasswordField('password', validators = [Required()])
-    remeber_me = BooleanField('remeber me')
+    username   = StringField('Username', validators=[Required()])
+    password   = PasswordField('Password', validators = [Required()])
+    remeber_me = BooleanField('Remeber me')
     submit     = SubmitField('Submit')
 
 class FormPost(FlaskForm):
-    body   = PageDownField("what's on your mind?", validators = [Required()])
+    body   = TextAreaField("what's on your mind?", validators = [Required()])
     submit = SubmitField('Submit')

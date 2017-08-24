@@ -6,7 +6,7 @@
 
 <div class="page-header">
     {% if current_user.is_authenticated %}
-    <h1 style="text-align:center">
+    <h1>
         <img class="img-circle"
              src="{{ url_for('static', filename='avatar.jpg') }}"
              height="32"
@@ -14,7 +14,7 @@
         hello {{ current_user.username }}!
     </h1>
     {% else %}
-    <h1 style="text-align:center">
+    <h1>
         <img class="img-circle"
              src="{{ url_for('static', filename='avatar.jpg') }}"
              height="32"
@@ -24,18 +24,28 @@
     {% endif %}
 </div>
 
+{% if current_user.can(Permission.WRITE_ARTICLES) %}
+<form method="POST" action="{{ url_for('blueprint_main.index') }}">
+    {{ form.hidden_tag() }}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">{{ form.body.label }}</h3>
+        </div>
+        <div class="panel-body">
+            {{ form.body(class_="form-control", rows="3") }}
+        </div>
+        <div class="panel-footer text-right">{{ form.submit(class_="btn btn-primary btn-block") }}</div>
+    </div>
+</form>
+{% endif %}
+
 {% include '_posts.html' %}
 
 {% if pagination%}
-    {{ macros.pagination_widget(pagination, '.index') }}
+{{ macros.pagination_widget(pagination, '.index') }}
 {% endif %}
 
-<div>
-    {% if current_user.can(Permission.WRITE_ARTICLES) %}
-    {{ wtf.quick_form(form) }}
-    {% endif %}
-</div>
-
 <hr>
-<h5 style="text-align:center">{{ user_agent }}</h5>
+<h5>{{ user_agent }}</h5>
 {% endblock %}
+
