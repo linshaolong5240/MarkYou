@@ -11,7 +11,7 @@ def index():
     form = FormPost()
     if current_user.can(Permission.WRITE_ARTICLES) and\
             form.validate_on_submit():
-        post = Post(body=form.body.data, author=current_user._get_current_object())
+        post = Post(body=form.pagedown.data, author=current_user._get_current_object())
         db.session.add(post)
         db.session.commit()
         return redirect(url_for('blueprint_main.index'))
@@ -59,15 +59,15 @@ def post(id):
 @blueprint_main.route('/edit_post/<int:id>', methods = ['GET','POST'])
 def edit_post(id):
     post = Post.query.get_or_404(id)
-    if current_user != post.author and not current_user.isadministrator():
+    if current_user != post.author and not current_user.is_administrator():
         abort(404)
 
     form = FormPost()
     if form.validate_on_submit():
-        post.body = form.body.data
+        post.body = form.pagedown.data
         db.session.add(post)
         db.session.commit()
         flash("The post has been updated.")
         return redirect(url_for('.post', id=post.id))
-    form.body.data = post.body
+    form.pagedown.data = post.body
     return render_template("edit_post.html", form=form)

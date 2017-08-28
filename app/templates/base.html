@@ -4,7 +4,7 @@
 {{ super() }}
 <link rel="shortcut icon" href="{{ url_for('static', filename = 'favicon.ico') }}" type="image/x-icon">
 <link rel="icon" href="{{ url_for('static', filename = 'favicon.ico') }}" type="image/x-icon">
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
 {% endblock %}
 
 {% block title %}Under The Mask{% endblock %}
@@ -22,18 +22,18 @@
             <a class="navbar-brand" href="#">UTM</a>
         </div>
         <div class="collapse navbar-collapse" id="navbar-collapse-index">
-            <ul class="nav navbar-nav">
-                <li ><a href="{{ url_for('blueprint_main.index') }}">Home</a></li>
-                <li><a href="{{ url_for('blueprint_main.index') }}">Vim</a></li>
-                <li><a href="{{ url_for('blueprint_main.index') }}">Mac</a></li>
+            <ul class="nav navbar-nav navbar-left">
+                <li ><a href="{{ url_for('blueprint_main.index') }}"><span class="glyphicon glyphicon-home"></span></a></li>
+                <!--<li><a href="{{ url_for('blueprint_main.index') }}">Vim</a></li>-->
+                <!--<li><a href="{{ url_for('blueprint_main.index') }}">Mac</a></li>-->
             </ul>
-            {% block navbarright %}
+            {% block navbar_right %}
             <ul class="nav navbar-nav navbar-right">
                 {% if current_user.is_authenticated %}
                 <li><a href="/"><span class="glyphicon glyphicon glyphicon-pencil"></span></a></li>
-                <li><a href="{{ url_for('blueprint_main.logout') }}">Logout</a></li>
+                <li><a href="{{ url_for('blueprint_main.logout') }}"><span class="glyphicon glyphicon glyphicon-log-out"></span> logout</a></li>
                 {% else %}
-                <li><a href="{{ url_for('blueprint_main.login') }}">Login</a></li>
+                <li><a href="{{ url_for('blueprint_main.login') }}"><span class="glyphicon glyphicon glyphicon-log-in"></span> login</a></li>
                 {% endif %}
             </ul>
             {% endblock %}

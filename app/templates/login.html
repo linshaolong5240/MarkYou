@@ -9,9 +9,9 @@
     {{ message }}
 </div>
 {% endfor %}
-
-<!--{{ wtf.quick_form(form) }}-->
-<form class="form-signin" method="POST" action="{{ url_for('blueprint_main.login') }}">
+<div class="container-fluid">
+<div class="center-block">
+<form class="form-signin col-md-4" method="POST" action="{{ url_for('blueprint_main.login') }}">
     {{ form.hidden_tag() }}
     <h2 class="form-signin-heading">Please sign in</h2>
     {{ form.username(class_="form-control", placeholder="Username") }}
@@ -24,4 +24,6 @@
     </div>
     {{ form.submit(class_="btn btn-primary btn-block") }}
 </form>
+</div>
+</div>
 {% endblock %}

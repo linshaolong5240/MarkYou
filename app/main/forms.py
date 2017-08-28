@@ -11,5 +11,5 @@ class FormLogin(FlaskForm):
     submit     = SubmitField('Submit')
 
 class FormPost(FlaskForm):
-    body   = TextAreaField("what's on your mind?", validators = [Required()])
+    pagedown   = PageDownField("what's on your mind?", validators = [Required()])
     submit = SubmitField('Submit')
