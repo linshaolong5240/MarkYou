@@ -30,10 +30,19 @@
             {% block navbar_right %}
             <ul class="nav navbar-nav navbar-right">
                 {% if current_user.is_authenticated %}
-                <li><a href="/"><span class="glyphicon glyphicon glyphicon-pencil"></span></a></li>
-                <li><a href="{{ url_for('blueprint_main.logout') }}"><span class="glyphicon glyphicon glyphicon-log-out"></span> logout</a></li>
+                <li>
+                  <a href="{{ url_for('blueprint_main.user',username=current_user.username) }}">
+                  <img class="img-circle"
+                  src="{{ url_for('static', filename='avatar.jpg') }}"
+                  height="20"
+                  width="20">
+                  {{ current_user.username }}
+                  </a>
+                </li>
+                <li><a href="{{ url_for('blueprint_main.write_post') }}"><span class="glyphicon glyphicon glyphicon-pencil"></span>write</a></li>
+                <li><a href="{{ url_for('blueprint_main.logout') }}"><span class="glyphicon glyphicon glyphicon-log-out"></span>logout</a></li>
                 {% else %}
-                <li><a href="{{ url_for('blueprint_main.login') }}"><span class="glyphicon glyphicon glyphicon-log-in"></span> login</a></li>
+                <li><a href="{{ url_for('blueprint_main.login') }}"><span class="glyphicon glyphicon glyphicon-log-in"></span>login</a></li>
                 {% endif %}
             </ul>
             {% endblock %}

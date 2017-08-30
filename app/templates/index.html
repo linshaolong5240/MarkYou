@@ -4,22 +4,6 @@
 
 {% block page_content %}
 
-{% if current_user.can(Permission.WRITE_ARTICLES) %}
-<!--PageDown-->
-<form method="POST" action="{{ url_for('blueprint_main.index') }}">
-    {{ form.hidden_tag() }}
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h3 class="panel-title">{{ form.pagedown.label }}</h3>
-        </div>
-        <div class="panel-body">
-            {{ form.pagedown(class_="form-control", rows=3) }}
-        </div>
-        <div class="panel-footer text-right">{{ form.submit(class_="btn btn-primary btn-block") }}</div>
-    </div>
-</form>
-{% endif %}
-
 {% include '_posts.html' %}
 
 {% if pagination%}
@@ -28,9 +12,5 @@
 
 <hr>
 <h5>{{ user_agent }}</h5>
-{% endblock %}
 
-{% block scripts %}
-{{ super() }}
-{{ pagedown.include_pagedown() }}
 {% endblock %}
