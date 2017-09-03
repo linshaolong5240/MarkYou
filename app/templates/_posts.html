@@ -6,15 +6,16 @@
     <div class="panel-body">
         <div class="list-group-item-text">
             {% if post.body_html %}
-            {% if loop.length == 1 %}
-            {{ post.body_html | safe }}
+                {% if loop.length == 1 %}
+                    {{ post.body_html | safe }}
+                {% else %}
+                    {{ post.body_html | safe | truncate(200) }}
+                    <a href="{{ url_for('blueprint_main.post', id=post.id) }}">More</a>
+                {% endif %}
             {% else %}
-            {{ post.body_html | safe | truncate(200) }}
+                {{ post.body | truncate(200) }}
+                <a href="{{ url_for('blueprint_main.post', id=post.id) }}">More</a>
             {% endif %}
-            {% else %}
-            {{ post.body | truncate(200) }}
-            {% endif %}
-            <a href="{{ url_for('blueprint_main.post', id=post.id) }}">More</a>
         </div>
     </div>
     <div class="panel-footer text-right">

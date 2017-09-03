@@ -1,7 +1,11 @@
 # -*- coding: utf-8 -*-
+import os
+import hashlib
+from werkzeug.utils import secure_filename
 from flask import current_app,request,render_template,redirect,url_for,flash,abort
+from flask import Response
 from flask_login import login_user,logout_user,login_required,current_user
-from .forms import FormLogin,FormPost
+from .forms import FormLogin,FormPost,FormFile
 from . import blueprint_main
 from .. import db
 from ..models import User,Role,Post,Permission
@@ -19,6 +23,44 @@ def index():
     posts = pagination.items
     user_agent = request.headers.get('user-agent')
     return render_template('index.html', posts=posts, pagination=pagination, user_agent=user_agent)
+
+
+@blueprint_main.route('/file/<filename>')
+def file(filename):
+    def get_mimetype(filename):
+        mimetype = 'application/octet-stream'
+        if '.' in filename:
+            extension = filename.rsplit('.', 1)[1]
+            if extension.find('jp') != -1:#if not found return -1
+               mimetype = 'image/jpeg'
+        return mimetype
+
+    filename = secure_filename(filename)
+    try:
+        with open(os.path.join(current_app.config['UPLOAD_FOLDER'], filename), 'rb') as file:
+            return Response(file.read(), mimetype=get_mimetype(filename))
+    except Exception as error:
+        return render_template('error.html',error=error)
+
+@blueprint_main.route('/upload_file', methods=['GET', 'POST'])
+def upload_file():
+    def allowed_file(filename):
+        return '.' in filename and \
+        filename.rsplit('.', 1)[1] in current_app.config['ALLOWED_EXTENSIONS']
+    user_agent = request.headers.get('user-agent')
+    form = FormFile()
+    if form.validate_on_submit():
+        temp_file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], 'tempfile')
+        file = form.file.data
+        if allowed_file(file.filename):
+            file_name = secure_filename(file.filename)
+            file.save(temp_file_path)
+            with open(temp_file_path, 'rb') as file:
+                md5 = hashlib.md5(file.read())
+                file_name = md5.hexdigest() + '.' + file_name.rsplit('.', 1)[1]
+                os.rename(temp_file_path, os.path.join(current_app.config['UPLOAD_FOLDER'], file_name))
+
+    return render_template('upload_file.html', form=form, user_agent=user_agent)
 
 @blueprint_main.route('/user/<username>')
 def user(username):
@@ -57,14 +99,12 @@ def post(id):
 
 @blueprint_main.route('/write_post', methods = ['GET','POST'])
 def write_post():
-    print('write_post')
     if current_user.can(Permission.WRITE_ARTICLES) == False:
         abort(404)
 
     form = FormPost()
     if form.validate_on_submit():
         post = Post(title=form.title.data, body=form.pagedown.data, author=current_user._get_current_object())
-        print(post.body)
         db.session.add(post)
         db.session.commit()
         flash("The post has been commited.")
