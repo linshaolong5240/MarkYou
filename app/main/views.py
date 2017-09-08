@@ -10,7 +10,7 @@ from . import blueprint_main
 from .. import db
 from ..models import User,Role,Post,Permission
 
-@blueprint_main.route('/', methods=['GET', 'POST'])
+@blueprint_main.route('/')
 def index():
     # if current_user.can(Permission.WRITE_ARTICLES) and\
     #         form.validate_on_submit():
@@ -25,8 +25,9 @@ def index():
     return render_template('index.html', posts=posts, pagination=pagination, user_agent=user_agent)
 
 
+@blueprint_main.route('/file/')
 @blueprint_main.route('/file/<filename>')
-def file(filename):
+def file(filename=None):
     def get_mimetype(filename):
         mimetype = 'application/octet-stream'
         if '.' in filename:
@@ -35,12 +36,19 @@ def file(filename):
                mimetype = 'image/jpeg'
         return mimetype
 
-    filename = secure_filename(filename)
-    try:
-        with open(os.path.join(current_app.config['UPLOAD_FOLDER'], filename), 'rb') as file:
-            return Response(file.read(), mimetype=get_mimetype(filename))
-    except Exception as error:
-        return render_template('error.html',error=error)
+    if filename:
+        filename = secure_filename(filename)
+        try:
+            with open(os.path.join(current_app.config['UPLOAD_FOLDER'], filename[:2], filename), 'rb') as file:
+                return Response(file.read(), mimetype=get_mimetype(filename))
+        except Exception as error:
+                return render_template('error.html',error=error)
+    else:
+        filename_list = []
+        for a in os.walk(current_app.config['UPLOAD_FOLDER']):#(root,dirs,files)
+            if a[2]:
+                filename_list.append(a[2][0])
+        return render_template('file.html', filename_list=filename_list)
 
 @blueprint_main.route('/upload_file', methods=['GET', 'POST'])
 def upload_file():
@@ -53,14 +61,25 @@ def upload_file():
         temp_file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], 'tempfile')
         file = form.file.data
         if allowed_file(file.filename):
-            file_name = secure_filename(file.filename)
-            file.save(temp_file_path)
-            with open(temp_file_path, 'rb') as file:
-                md5 = hashlib.md5(file.read())
-                file_name = md5.hexdigest() + '.' + file_name.rsplit('.', 1)[1]
-                os.rename(temp_file_path, os.path.join(current_app.config['UPLOAD_FOLDER'], file_name))
+            # file_name = secure_filename(file.filename)
+            sha1 = hashlib.sha1(file.stream.read())
+            file_name = sha1.hexdigest() + '.' + file.filename.rsplit('.', 1)[1]
+            file_save_path = os.path.join(current_app.config['UPLOAD_FOLDER'] , file_name[:2])
+            if os.path.isdir(file_save_path) == False:
+                os.mkdir(file_save_path)
+            file.stream.seek(0)
+            file.save(os.path.join(file_save_path,file_name))
+
 
     return render_template('upload_file.html', form=form, user_agent=user_agent)
+
+@blueprint_main.route('/file_delete/<filename>')
+def file_delete(filename):
+    try:
+        os.remove(os.path.join(current_app.config['UPLOAD_FOLDER'],filename[:2],filename))
+    except Exception as error:
+            return render_template('error.html',error=error)
+    return redirect(url_for('blueprint_main.file'))
 
 @blueprint_main.route('/user/<username>')
 def user(username):

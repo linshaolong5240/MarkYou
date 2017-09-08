@@ -1,15 +1,23 @@
+a:hover {
+  text-decoration: none;
+}
 body {
   padding-top: 70px;
 }
 textarea {
   resize: none;
 }
+.glyphicon {
+}
 .navbar-avatar {
   display: block;
 }
-.glyphicon {
-  margin-right: 10px;
+
+.panel-body-image {
+    padding: 0;
 }
-a:hover {
-  text-decoration: none;
+.panel-body-image a {
+    padding: 0;
+    border: 0;
+    margin-bottom: 0;
 }

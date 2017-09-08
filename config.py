@@ -4,8 +4,10 @@ class Config:
     SECRET_KEY = 'underthemask'
     SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:594120@localhost/underthemask?charset=utf8mb4'
     SQLALCHEMY_TRACK_MODIFICATIONS = True
-    UPLOAD_FOLDER = '/Users/mark/uploads/'
+    # UPLOAD_FOLDER = '/Users/mark/uploads/'
+    UPLOAD_FOLDER = 'D:\\Users\\Mark\\uploads\\'
     ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
+    MAX_CONTENT_LENGTH = 16 * 1024 * 1024
 
     POSTS_PER_PAGE = 5
 

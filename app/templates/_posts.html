@@ -1,27 +1,30 @@
 {% for post in posts %}
 <div class="panel panel-default">
     <div class="panel-heading">
-        <h3 class="panel-title">{{ post.title }}</h3>
+        <a href="{{ url_for('.post', id=post.id) }}">
+            <h3 class="panel-title">{{ post.title }}</h3>
+        </a>
     </div>
     <div class="panel-body">
         <div class="list-group-item-text">
             {% if post.body_html %}
                 {% if loop.length == 1 %}
-                    {{ post.body_html | safe }}
+                    {{ post.body_html|safe }}
                 {% else %}
-                    {{ post.body_html | safe | truncate(200) }}
+                    {{ post.body_html|safe|truncate(200) }}
+                    {% if post.body_html|length > 200 %}
                     <a href="{{ url_for('blueprint_main.post', id=post.id) }}">More</a>
+                    {% endif %}
                 {% endif %}
             {% else %}
-                {{ post.body | truncate(200) }}
+                {{ post.body|truncate(200) }}
+                {% if post.body_html|length > 200 %}
                 <a href="{{ url_for('blueprint_main.post', id=post.id) }}">More</a>
+                {% endif %}
             {% endif %}
         </div>
     </div>
     <div class="panel-footer text-right">
-        <a href="{{ url_for('.post', id=post.id) }}">
-            <span class="label label-default">Permalink</span>
-        </a>
         {% if current_user == post.author %}
         <a href="{{ url_for('.edit_post', id=post.id) }}">
             <span class="label label-primary">Edit</span>

@@ -19,31 +19,31 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">UTM</a>
+            <a class="navbar-brand" href="{{ url_for('blueprint_main.index') }}">UTM</a>
         </div>
         <div class="collapse navbar-collapse" id="navbar-collapse-index">
             <ul class="nav navbar-nav navbar-left">
                 <li ><a href="{{ url_for('blueprint_main.index') }}"><span class="glyphicon glyphicon-home"></span></a></li>
                 <!--<li><a href="{{ url_for('blueprint_main.index') }}">Vim</a></li>-->
                 <!--<li><a href="{{ url_for('blueprint_main.index') }}">Mac</a></li>-->
-                <li><a href="{{ url_for('blueprint_main.upload_file') }}"><span class="glyphicon glyphicon-upload"></span></a></li>
+                <li><a href="{{ url_for('blueprint_main.file') }}"><span class="glyphicon glyphicon-picture"></span></a></li>
             </ul>
             {% block navbar_right %}
             <ul class="nav navbar-nav navbar-right">
                 {% if current_user.is_authenticated %}
+                <li><a href="{{ url_for('blueprint_main.write_post') }}"><span class="glyphicon glyphicon glyphicon-pencil"></span></a></li>
+                <li><a href="{{ url_for('blueprint_main.upload_file') }}"><span class="glyphicon glyphicon-upload"></span></a></li>
+                <li><a href="{{ url_for('blueprint_main.logout') }}"><span class="glyphicon glyphicon glyphicon-log-out"></span></a></li>
                 <li>
                   <a href="{{ url_for('blueprint_main.user',username=current_user.username) }}">
                   <img class="img-circle"
                   src="{{ url_for('static', filename='avatar.jpg') }}"
-                  height="20"
-                  width="20">
-                  {{ current_user.username }}
+                  height="16"
+                  width="16">
                   </a>
                 </li>
-                <li><a href="{{ url_for('blueprint_main.write_post') }}"><span class="glyphicon glyphicon glyphicon-pencil"></span>write</a></li>
-                <li><a href="{{ url_for('blueprint_main.logout') }}"><span class="glyphicon glyphicon glyphicon-log-out"></span>logout</a></li>
                 {% else %}
-                <li><a href="{{ url_for('blueprint_main.login') }}"><span class="glyphicon glyphicon glyphicon-log-in"></span>login</a></li>
+                <li><a href="{{ url_for('blueprint_main.login') }}"><span class="glyphicon glyphicon glyphicon-log-in"></span></a></li>
                 {% endif %}
             </ul>
             {% endblock %}
