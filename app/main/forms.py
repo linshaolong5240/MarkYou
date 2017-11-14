@@ -17,5 +17,5 @@ class FormPost(FlaskForm):
     submit   = SubmitField('Submit')
 
 class FormFile(FlaskForm):
-    file = FileField(validators=[FileRequired()])
+    file = FileField('file', validators=[FileRequired()])
     submit = SubmitField('Submit')

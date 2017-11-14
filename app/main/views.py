@@ -55,21 +55,22 @@ def upload_file():
     def allowed_file(filename):
         return '.' in filename and \
         filename.rsplit('.', 1)[1] in current_app.config['ALLOWED_EXTENSIONS']
-    user_agent = request.headers.get('user-agent')
-    form = FormFile()
-    if form.validate_on_submit():
-        temp_file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], 'tempfile')
-        file = form.file.data
+
+    def save_upload_file(file):
         if allowed_file(file.filename):
-            # file_name = secure_filename(file.filename)
             sha1 = hashlib.sha1(file.stream.read())
             file_name = sha1.hexdigest() + '.' + file.filename.rsplit('.', 1)[1]
             file_save_path = os.path.join(current_app.config['UPLOAD_FOLDER'] , file_name[:2])
             if os.path.isdir(file_save_path) == False:
-                os.mkdir(file_save_path)
+                os.makedirs(file_save_path)
             file.stream.seek(0)
             file.save(os.path.join(file_save_path,file_name))
 
+    user_agent = request.headers.get('user-agent')
+    form = FormFile()
+    if form.validate_on_submit():
+        for file in request.files.getlist('file'):
+            save_upload_file(file)
 
     return render_template('upload_file.html', form=form, user_agent=user_agent)
 
@@ -118,6 +119,8 @@ def post(id):
 
 @blueprint_main.route('/write_post', methods = ['GET','POST'])
 def write_post():
+    print(current_user.can(Permission.WRITE_ARTICLES))
+    print(current_user.username)
     if current_user.can(Permission.WRITE_ARTICLES) == False:
         abort(404)
 
