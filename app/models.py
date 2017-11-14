@@ -107,13 +107,13 @@ class Post(db.Model):
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     @staticmethod
     def on_changed_body(target, value, oldvalue, initiator):
-        allowed_tags = ['a', 'abbr', 'acronym', 'b', 'blockquote', 'code',
+        allowed_tags = ['a', 'abbr', 'acronym', 'b', 'blockquote', 'code', 'div',
                         'em', 'i', 'img', 'li', 'ol', 'pre', 'strong', 'ul',
                         'h1', 'h2', 'h3', 'p', 'src']
         allowed_attrs = {
-        '*': ['class'],
+        '*': ['class', 'align'],
         'a': ['href', 'rel'],
-        'img': ['src','alt'],
+        'img': ['src','alt', 'width', 'height'],
         }
         target.body_html = bleach.linkify(bleach.clean(
                                         markdown(value, output_format='html'),
