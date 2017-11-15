@@ -3,7 +3,7 @@ import os
 
 class Config:
     SECRET_KEY = 'underthemask'
-    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:12345678@localhost/underthemask?charset=utf8mb4'
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:12345678@localhost/UTM?charset=utf8mb4'
     SQLALCHEMY_TRACK_MODIFICATIONS = True
     # UPLOAD_FOLDER = '/Users/mark/uploads/'
     # UPLOAD_FOLDER = 'D:\\Users\\Mark\\uploads\\'
