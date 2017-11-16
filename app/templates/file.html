@@ -10,11 +10,14 @@
                 <img src="{{ url_for('blueprint_main.file', filename=filename) }}" alt="">
             </a>
         </div>
+
+        {% if current_user.is_authenticated %}
         <div class="panel-footer">
             <a href="{{ url_for('blueprint_main.file_delete',filename=filename) }}">
-            <span class="label label-danger">Delete</span>
+                <span class="label label-danger">Delete</span>
             </a>
         </div>
+        {% endif %}
     </div>
 </div>
 {% endfor %}

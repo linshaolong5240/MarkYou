@@ -119,8 +119,6 @@ def post(id):
 
 @blueprint_main.route('/write_post', methods = ['GET','POST'])
 def write_post():
-    print(current_user.can(Permission.WRITE_ARTICLES))
-    print(current_user.username)
     if current_user.can(Permission.WRITE_ARTICLES) == False:
         abort(404)
 
