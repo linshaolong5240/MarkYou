@@ -4,6 +4,10 @@ a:hover {
 body {
   padding-top: 70px;
 }
+img{
+  height:auto;
+  max-width:100%;
+}
 textarea {
   resize: none;
 }
